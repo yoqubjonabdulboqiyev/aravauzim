@@ -1,0 +1,48 @@
+import { getModelForClass, modelOptions, prop, Ref } from "@typegoose/typegoose";
+import { Types } from "mongoose";
+import { Collections } from "../../../../constant/collections";
+import { BaseModel } from "../../base.model";
+import { Client } from "../../client/client.model";
+import { Seller } from "../seller.model";
+
+@modelOptions({
+    schemaOptions: {
+        collection:Collections.SELLER_COMMENT
+    }
+})
+
+
+export class SellerComment extends BaseModel {
+    @prop({
+        required: true,
+        min: 1,
+        max: 5
+    })
+    rating: number;
+
+    @prop({
+        default : null,
+        trim: true,
+        required:true
+    })
+    comment: string
+    
+    @prop({
+        required:  true,
+        trim : true,
+        type: Types.ObjectId,
+        ref: Collections.PRODUCT
+    })
+    sellerId : Ref<Seller>
+
+    @prop({
+        required:  true,
+        trim : true,
+        type: Types.ObjectId,
+        ref: Collections.CATEGORY
+    })
+    clientId : Ref<Client>
+
+}
+
+export const SellerCommentModel = getModelForClass(SellerComment)
